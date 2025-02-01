@@ -1,7 +1,6 @@
 {
   "name": "country-info-app",
   "version": "1.0.0",
-  "main": "index.js",
   "repository": "country-info-app",
   "author": "joaopedroc-araujo <costaaraujojoaopedro@gmail.com>",
   "license": "MIT"
