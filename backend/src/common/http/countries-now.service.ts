@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { lastValueFrom } from 'rxjs';
 
 @Injectable()
@@ -14,7 +14,8 @@ export class CountriesNowService {
       })
       .pipe(map((response) => response.data.data.populationCounts));
 
-    return lastValueFrom(response$);
+    const response = await lastValueFrom(response$);
+    return response;
   }
 
   async getFlagUrl(country: string) {
@@ -24,6 +25,7 @@ export class CountriesNowService {
       })
       .pipe(map((response) => response.data.data.flag));
 
-    return lastValueFrom(response$);
+    const response = await lastValueFrom(response$);
+    return response;
   }
 }
