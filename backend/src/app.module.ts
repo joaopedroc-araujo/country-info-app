@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { CountriesModule } from './countries/modules/countries.module';
+import { HttpModule } from '@nestjs/axios';
+import { CountriesController } from './countries/countries.controller';
+import { CountriesService } from './countries/countries.service';
+import { DateNagerService } from './common/http/date-nager.service';
+import { CountriesNowService } from './common/http/countries-now.service';
 
 @Module({
-  imports: [CountriesModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [HttpModule],
+  controllers: [CountriesController],
+  providers: [CountriesService, DateNagerService, CountriesNowService],
 })
 export class AppModule {}
