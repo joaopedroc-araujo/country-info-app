@@ -7,5 +7,6 @@ export const fetchCountries = async () => {
 
 export const fetchCountryDetails = async (countryCode: string) => {
   const response = await httpClient.get(`countries/${countryCode}/info`);
+  console.log(response);
   return response;
 };

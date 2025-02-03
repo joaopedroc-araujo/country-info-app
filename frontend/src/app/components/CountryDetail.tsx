@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -13,7 +12,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Card, CardContent } from "./ui/card";
-import { fetchCountryDetails } from "../service/api.service";
+import { useCountryDetails } from "../hooks/useCountryDetails.hook";
 
 interface CountryDetail {
   name: string;
@@ -33,24 +32,9 @@ export default function CountryDetail({
 }: {
   countryCode: string;
 }) {
-  const [countryData, setCountryData] = useState<CountryDetail | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const getCountryData = async () => {
-      try {
-        const response = await fetchCountryDetails(countryCode);
-        setCountryData(response.data);
-      } catch (error) {
-        setError(error instanceof Error ? error.message : "An error occurred");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getCountryData();
-  }, [countryCode]);
+  console.log(countryCode);
+  const { countryData, loading, error } = useCountryDetails(countryCode);
+  console.log(countryData);
 
   if (loading) return <div>Loading country details...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -62,7 +46,7 @@ export default function CountryDetail({
         <div className="flex items-center gap-4 mb-6">
           <Image
             src={countryData.flag}
-            alt={`${countryData.name} flag`}
+            alt={`${countryData.commonName} flag`}
             width={80}
             height={60}
             className="rounded shadow"

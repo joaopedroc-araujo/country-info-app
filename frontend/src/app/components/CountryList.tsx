@@ -27,10 +27,13 @@ export default function CountryList() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {countries?.map((country) => (
-        <Link href={`/country/${country.code}`} key={country.code}>
+        <Link
+          href={`/country/${country.countryCode}`}
+          key={country.countryCode}
+        >
           <Card className="hover:shadow-lg transition-shadow">
             <CardContent className="p-4">
-              <h2 className="text-xl font-semibold text-white">
+              <h2 className="text-xl font-semibold text-gray-700">
                 {country.name}
               </h2>
             </CardContent>

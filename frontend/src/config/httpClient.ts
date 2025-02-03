@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const httpClient = axios.create({
-  baseURL: "http://localhost:3000/",
+  baseURL: "http://localhost:3001/",
   headers: {
     "Content-Type": "application/json",
   },
@@ -9,7 +9,6 @@ const httpClient = axios.create({
 
 httpClient.interceptors.request.use(
   (config) => {
-    console.log(config);
     return config;
   },
   (error) => Promise.reject(error)

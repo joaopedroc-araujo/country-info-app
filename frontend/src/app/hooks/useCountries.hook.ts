@@ -1,10 +1,9 @@
-// hooks/useCountries.ts
 import { useState, useEffect } from "react";
 import { fetchCountries } from "../service/api.service";
 
 interface Country {
   name: string;
-  code: string;
+  countryCode: string;
 }
 
 interface UseCountriesReturn {
@@ -23,10 +22,10 @@ export function useCountries(): UseCountriesReturn {
       try {
         setLoading(true);
         const response = await fetchCountries();
-        if (response?.data) {
-          setCountries(response.data);
+        if (Array.isArray(response)) {
+          setCountries(response);
         } else {
-          throw new Error("No data received from API");
+          throw new Error("Expected an array of countries");
         }
       } catch (error) {
         setError(error instanceof Error ? error.message : "An error occurred");
