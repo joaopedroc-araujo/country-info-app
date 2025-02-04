@@ -1,17 +1,20 @@
 import { useState, useEffect } from "react";
 import { fetchCountryDetails } from "../service/api.service";
 
-interface CountryDetail {
+interface BorderCountry {
+  commonName: string;
+  countryCode: string;
+}
+
+interface PopulationData {
+  year: number;
+  value: number;
+}
+export interface CountryDetail {
   name: string;
-  flag: string;
-  borderCountries: Array<{
-    name: string;
-    code: string;
-  }>;
-  populationData: Array<{
-    year: number;
-    population: number;
-  }>;
+  flagUrl: string;
+  borders: BorderCountry[];
+  population: PopulationData[];
 }
 
 interface UseCountryDetailsReturn {
@@ -20,13 +23,11 @@ interface UseCountryDetailsReturn {
   error: string | null;
 }
 
-export function useCountryDetails(
-  countryCode: string
-): UseCountryDetailsReturn {
+
+export function useCountryDetails(countryCode: string): UseCountryDetailsReturn {
   const [countryData, setCountryData] = useState<CountryDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  console.log(countryCode);
 
   useEffect(() => {
     const getCountryData = async () => {
@@ -34,27 +35,34 @@ export function useCountryDetails(
 
       try {
         setLoading(true);
-        const data = await fetchCountryDetails(countryCode);
-        console.log(data);
+        const data: CountryDetail = await fetchCountryDetails(countryCode);
+
+        if (!data) {
+          throw new Error("No data received");
+        }
 
         const formattedData: CountryDetail = {
           name: data.name || "Unknown",
-          flag: data.flagUrl || "",
-          borderCountries:
-            data.borders?.map((border: any) => ({
-              name: border.name,
-              code: border.code,
-            })) || [],
-          populationData:
-            data.population?.map((pop: any) => ({
-              year: pop.year,
-              population: pop.population,
-            })) || [],
+          flagUrl: data.flagUrl || "",
+          borders: data.borders
+            ? data.borders.map((border: BorderCountry) => ({
+                commonName: border.commonName || "Unknown",
+                countryCode: border.countryCode || "",
+              }))
+            : [],
+          population: data.population
+            ? data.population.map((pop: PopulationData) => ({
+                year: pop.year || 0,
+                value: pop.value || 0,
+              }))
+            : [],
         };
 
         setCountryData(formattedData);
+        setError(null);
       } catch (error) {
         setError(error instanceof Error ? error.message : "An error occurred");
+        setCountryData(null);
       } finally {
         setLoading(false);
       }
