@@ -1,9 +1,11 @@
-import CountryDetail from "@/app/components/CountryDetail";
+import * as React from 'react'
+import CountryDetail from "@/app/components/CountryDetails/CountryDetail";
 
-export default async function CountryPage({
+export default function CountryPage({
   params,
 }: {
   params: { code: string };
 }) {
-  return <CountryDetail countryCode={params.code} />;
+  const { code } = params;
+  return <CountryDetail countryCode={code} />;
 }

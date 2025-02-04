@@ -1,27 +1,25 @@
 "use client";
 
 import Link from "next/link";
-import { Card, CardContent } from "./ui/card";
-import { useCountries } from "../hooks/useCountries.hook";
+import { Card, CardContent } from "../ui/card";
+import { useCountries } from "../../hooks/useCountries.hook";
+import { ErrorMessage } from "../ui/errorMessage";
+import { LoadingSpinner } from "../ui/loading";
+import { JSX } from "react";
 
-export default function CountryList() {
+/**
+ * CountryList component to display a list of countries.
+ * @returns {JSX.Element} A grid of country cards.
+ */
+export default function CountryList(): JSX.Element {
   const { countries, loading, error } = useCountries();
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   if (error) {
-    return (
-      <div className="text-center p-8">
-        <div className="text-red-600 text-lg mb-2">Error loading countries</div>
-        <div className="text-gray-600">{error}</div>
-      </div>
-    );
+    return <ErrorMessage error={error} />;
   }
 
   return (

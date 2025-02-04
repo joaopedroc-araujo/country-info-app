@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const httpClient = axios.create({
-  baseURL: "http://localhost:3001/",
+  baseURL: process.env.API_BASE_URL || "http://localhost:3001/",
   headers: {
     "Content-Type": "application/json",
   },
@@ -17,6 +17,9 @@ httpClient.interceptors.request.use(
 httpClient.interceptors.response.use(
   (response) => response,
   (error) => {
+    if (error.response) {
+      error.message = `Request failed with status ${error.response.status}: ${error.response.data.message || "Unknown error"}`;
+    }
     return Promise.reject(error);
   }
 );

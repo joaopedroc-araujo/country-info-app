@@ -1,35 +1,27 @@
+'use client'
+
 import { useState, useEffect } from "react";
 import { fetchCountryDetails } from "../service/api.service";
+import {
+  BorderCountry,
+  CountryDetail,
+  PopulationData,
+  UseCountryDetailsReturn,
+} from "../interfaces/interfaces";
 
-interface BorderCountry {
-  commonName: string;
-  countryCode: string;
-}
-
-interface PopulationData {
-  year: number;
-  value: number;
-}
-export interface CountryDetail {
-  name: string;
-  flagUrl: string;
-  borders: BorderCountry[];
-  population: PopulationData[];
-}
-
-interface UseCountryDetailsReturn {
-  countryData: CountryDetail | null;
-  loading: boolean;
-  error: string | null;
-}
-
-
+/**
+ * Custom hook to fetch and manage the details of a specific country.
+ * @param {string} countryCode - The code of the country to fetch details for.
+ * @returns {UseCountryDetailsReturn} An object containing country data, loading state, and error.
+ */
 export function useCountryDetails(countryCode: string): UseCountryDetailsReturn {
   const [countryData, setCountryData] = useState<CountryDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     const getCountryData = async () => {
       if (!countryCode) return;
 
@@ -61,14 +53,22 @@ export function useCountryDetails(countryCode: string): UseCountryDetailsReturn 
         setCountryData(formattedData);
         setError(null);
       } catch (error) {
-        setError(error instanceof Error ? error.message : "An error occurred");
-        setCountryData(null);
+        if (!abortController.signal.aborted) {
+          setError(error instanceof Error ? error.message : "An error occurred");
+          setCountryData(null);
+        }
       } finally {
-        setLoading(false);
+        if (!abortController.signal.aborted) {
+          setLoading(false);
+        }
       }
     };
 
     getCountryData();
+
+    return () => {
+      abortController.abort();
+    };
   }, [countryCode]);
 
   return { countryData, loading, error };
