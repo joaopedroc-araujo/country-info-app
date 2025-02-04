@@ -12,7 +12,7 @@ export const BorderCountries = ({ borders }: { borders: BorderCountry[] }) => (
     <CardContent className="p-6">
       <h2 className="text-2xl font-semibold mb-4 text-gray-600">Border Countries</h2>
       <div className="flex flex-wrap gap-2 text-gray-600">
-        {borders.map((border) => (
+        {borders.length > 0 && borders.map((border) => (
           <Link
             href={`/country/${border.countryCode}`}
             key={border.countryCode}

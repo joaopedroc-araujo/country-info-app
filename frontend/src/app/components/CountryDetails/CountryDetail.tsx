@@ -36,7 +36,7 @@ export default function CountryDetail({
     <div className="container mx-auto p-4">
       <div className="mb-8">
         <CountryHeader name={countryData.name} flagUrl={countryData.flagUrl} />
-        <BorderCountries borders={countryData.borders} />
+        {countryData.borders.length > 0 && <BorderCountries borders={countryData.borders} />}
         <PopulationChart population={countryData.population} />
       </div>
     </div>

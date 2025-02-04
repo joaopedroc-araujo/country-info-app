@@ -14,13 +14,13 @@ export const CountryHeader = ({ name, flagUrl }: { name: string; flagUrl: string
     <Link href="/" className="text-white hover:underline" aria-label="Go back">
       <IoChevronBackCircleSharp size={50} />
     </Link>
-    <Image
+   { flagUrl !== '' && <Image
       src={flagUrl}
       alt={`${name} flag`}
       width={80}
       height={30}  
       className="rounded shadow"
-    />
+    />}
     <h1 className="text-6xl font-bold">{name}</h1>
   </div>
 );
