@@ -3,5 +3,9 @@
   "version": "1.0.0",
   "repository": "country-info-app",
   "author": "joaopedroc-araujo <costaaraujojoaopedro@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@nestjs/cache-manager": "^3.0.0",
+    "cache-manager": "^6.4.0"
+  }
 }
