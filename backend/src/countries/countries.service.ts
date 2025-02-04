@@ -34,8 +34,8 @@ export class CountriesService {
 
     try {
       const countries = await this.dateNagerService.getAllAvailableCountries();
-      const sortedCountries = countries.sort((a, b) =>
-        a.name.localeCompare(b.name),
+      const sortedCountries: Country[] = countries.sort(
+        (a: Country, b: Country) => a.name.localeCompare(b.name),
       );
       await this.cacheManager.set(cacheKey, sortedCountries, 86400000);
 
