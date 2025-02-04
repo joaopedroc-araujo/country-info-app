@@ -37,7 +37,7 @@ export class CountriesnowService {
       const response$ = this.httpService
         .post(
           'https://countriesnow.space/api/v0.1/countries/flag/images',
-          { country },
+          { iso2: country },
           {
             timeout: this.API_TIMEOUT,
           },

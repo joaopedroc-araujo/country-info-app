@@ -17,8 +17,8 @@ export const CountryHeader = ({ name, flagUrl }: { name: string; flagUrl: string
     <Image
       src={flagUrl}
       alt={`${name} flag`}
-      width={100}
-      height={50}  
+      width={80}
+      height={30}  
       className="rounded shadow"
     />
     <h1 className="text-6xl font-bold">{name}</h1>

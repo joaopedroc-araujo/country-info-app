@@ -10,7 +10,8 @@ export class CountriesController {
   @Get('available')
   async getAvailableCountries() {
     try {
-      return this.countriesService.getAvailableCountries();
+      const response = await this.countriesService.getAvailableCountries();
+      return response;
     } catch (error) {
       throw new Error(error);
     }
@@ -19,7 +20,8 @@ export class CountriesController {
   @Get(':countryCode/info')
   async getCountryInfo(@Param('countryCode') countryCode: string) {
     try {
-      return this.countriesService.getCountryInfo(countryCode);
+      const response = await this.countriesService.getCountryInfo(countryCode);
+      return response;
     } catch (error) {
       throw new Error(error);
     }

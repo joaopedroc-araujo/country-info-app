@@ -13,7 +13,7 @@ export interface CountryInfo {
       value: number;
     },
   ];
-  flagUrl: string;
+  flagUrl?: string;
 }
 
 @Injectable()
@@ -59,9 +59,9 @@ export class CountriesService {
       const availableCountries =
         await this.dateNagerService.getAllAvailableCountries();
 
-      const [populationData, flagUrl] = await Promise.all([
+      const [populationResult, flagResult] = await Promise.allSettled([
         this.countriesNowService.getPopulationData(countryInfo.commonName),
-        this.countriesNowService.getFlagUrl(countryInfo.commonName),
+        this.countriesNowService.getFlagUrl(countryInfo.countryCode),
       ]);
 
       const borderCountries = countryInfo.borders.map(
@@ -70,11 +70,16 @@ export class CountriesService {
             ?.name || borderCode,
       );
 
+      const population =
+        populationResult.status === 'fulfilled' ? populationResult.value : null;
+      const flagUrl =
+        flagResult.status === 'fulfilled' ? flagResult.value : null;
+
       const formattedCountryInfo: CountryInfo = {
         name: countryInfo.commonName,
         borders: borderCountries,
-        population: populationData,
-        flagUrl,
+        population,
+        flagUrl: flagUrl || '',
       };
 
       await this.cacheManager.set(cacheKey, formattedCountryInfo, 86400000);
